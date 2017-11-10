@@ -1,8 +1,9 @@
 module TapclicksApi
   class Model < TapclicksApi::Service
 
-    def get
-      response = request(:get, service_url)
+    def get(id=nil)
+      url = id.nil? ? service_url : "#{service_url}/#{id}"
+      response = request(:get, url)
       users = JSON.parse(response.body)
       return users["data"]
     end
