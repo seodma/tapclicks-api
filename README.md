@@ -1,4 +1,3 @@
-=======
 # Tapclicks::Api
 A simple ruby wrapper for the Tapclicks API
 
@@ -20,7 +19,8 @@ Or install it yourself as:
 
 ## Usage
 Get all users:
-   ```service = TapclicksApi::Users.new(client_id: CLIENT_ID, client_secret: SECRET)
+   ```
+      service = TapclicksApi::Users.new(client_id: CLIENT_ID, client_secret: SECRET)
       users = service.get
    ```
 Get user by id
