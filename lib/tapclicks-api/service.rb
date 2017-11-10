@@ -6,7 +6,8 @@ module TapclicksApi
     def initialize(options={})
       @client_id = options[:client_id]
       @client_secret = options[:client_secret]
-      @access_token = get_access_token
+      @expires_at = nil
+      refresh_token
     end
 
     def request(method, url, params={}, headers={})
@@ -41,6 +42,14 @@ module TapclicksApi
 
     private
 
+    def refresh_token
+      if @expires_at.nil? || @expires_at <= Time.now
+        token_info = get_access_token
+        @access_token = token_info[:token]
+        @expires_at = token_info[:expires_at]
+      end
+    end
+
     def get_access_token
       url = "https://api.tapclicks.com/oauth/accesstoken"
       params = {
@@ -51,7 +60,7 @@ module TapclicksApi
       uri = URI(url)
       response = Net::HTTP.post_form(uri, params)
       token = JSON.parse(response.body)
-      return "Bearer #{token['access_token']}"
+      return { token: "Bearer #{token['access_token']}", expires_at: Time.now + token['expires_in'].to_i }
     end
 
   end
