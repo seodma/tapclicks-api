@@ -10,7 +10,7 @@ module TapclicksApi
       refresh_token
     end
 
-    def request(method, url, params={}, headers={})
+    def request(method, url, params={})
       headers.merge!( { Authorization: "Bearer #{@access_token}" } ) if !@access_token.nil?
       uri = URI.parse(url)
 

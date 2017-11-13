@@ -18,5 +18,17 @@ module TapclicksApi
       end
     end
 
+    def update(id, params={})
+      url = "#{service_url}/#{id}"
+      response = request(:post, url, params)
+      model = JSON.parse(response.body)
+      if !model["data"].nil? && model["error"] == false
+        return model["data"]["id"]
+      else
+        raise model["data"].join("; ")
+      end
+
+    end
+
   end
 end
