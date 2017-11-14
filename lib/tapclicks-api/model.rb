@@ -8,8 +8,8 @@ module TapclicksApi
       return users["data"]
     end
 
-    def create(params={})
-      response = request(:post, service_url, params)
+    def create(params={}, use_cookies=false)
+      response = request(:post, service_url, params, use_cookies)
       model = JSON.parse(response.body)
       if !model["data"].nil? && model["error"] == false
         return model["data"]["id"]

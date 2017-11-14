@@ -6,11 +6,14 @@ module TapclicksApi
     def initialize(options={})
       @client_id = options[:client_id]
       @client_secret = options[:client_secret]
+      @@app_domain = options[:app_domain]
+      @email = options[:email]
+      @password = options[:password]
       @expires_at = nil
       refresh_token
     end
 
-    def request(method, url, params={})
+    def request(method, url, params={}, use_cookies=false)
       headers = ( { Authorization: "Bearer #{@access_token}" } ) if !@access_token.nil?
       uri = URI.parse(url)
 
@@ -32,6 +35,10 @@ module TapclicksApi
         request.body = post_body.join
         request['Content-Type'] = "multipart/form-data, boundary=#{BOUNDARY}"
         request['Authorization'] = @access_token
+        if use_cookies
+          cookies = get_cookies
+          request['Cookie'] = "adminhtml=bj8c4a853hmqn3l8eaeflof5b1v1l7q2"
+        end
         response = Net::HTTP.start(uri.host, uri.port,
           use_ssl: true) do |http|
           http.request(request)
@@ -48,6 +55,12 @@ module TapclicksApi
         @access_token = token_info[:token]
         @expires_at = token_info[:expires_at]
       end
+    end
+
+    def get_cookies
+      uri = URI("https://#{@@app_domain}.tapclicks.com/app/dash/session/login")
+      response = Net::HTTP.post_form(uri, email: @email, password: @password)
+      return response['set-cookie'].split('; ')[0]
     end
 
     def get_access_token
