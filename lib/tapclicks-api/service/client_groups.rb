@@ -13,10 +13,10 @@ module TapclicksApi
       url = "https://#{@app_domain}.tapclicks.com/app/dash/clientGroup/update_client_group/key/id7pusme0j3strek7evfmbtj01alkskv"
       response = request(:post, url, params, true)
       model = JSON.parse(response.body)
-      if !model["data"].nil? && model["error"] == false
+      if !model["data"]["id"].nil? && model["status"]["success"]
         return model["data"]["id"]
       else
-        raise model["data"].join("; ")
+        raise model["data"].join(",")
       end
     end
 
