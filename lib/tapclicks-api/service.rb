@@ -36,8 +36,7 @@ module TapclicksApi
         request['Content-Type'] = "multipart/form-data, boundary=#{BOUNDARY}"
         request['Authorization'] = @access_token
         if use_cookies
-          cookies = get_cookies
-          request['Cookie'] = "adminhtml=bj8c4a853hmqn3l8eaeflof5b1v1l7q2"
+          request['Cookie'] = get_cookies
         end
         response = Net::HTTP.start(uri.host, uri.port,
           use_ssl: true) do |http|
