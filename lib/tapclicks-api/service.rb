@@ -7,6 +7,8 @@ module TapclicksApi
       @client_id = options[:client_id]
       @client_secret = options[:client_secret]
       @app_domain = options[:app_domain]
+      @custom_domain = options[:custom_domain]
+      @custom_domain ||= "#{@app_domain}.tapclicks.com"
       @email = options[:email]
       @password = options[:password]
       @expires_at = nil
@@ -57,8 +59,13 @@ module TapclicksApi
     end
 
     def get_cookies
-      uri = URI("https://#{@app_domain}.tapclicks.com/app/dash/session/login")
-      response = Net::HTTP.post_form(uri, email: @email, password: @password)
+      uri = URI("https://#{@custom_domain}/app/dash/session/login")
+      begin
+        response = Net::HTTP.post_form(uri, email: @email, password: @password)
+      rescue OpenSSL::SSL::SSLError
+        uri = URI("http://#{@custom_domain}/app/dash/session/login")
+        response = Net::HTTP.post_form(uri, email: @email, password: @password)
+      end
       return response['set-cookie'].split('; ')[0]
     end
 
