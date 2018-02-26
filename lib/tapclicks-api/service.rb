@@ -15,7 +15,7 @@ module TapclicksApi
       refresh_token
     end
 
-    def request(method, url, params={}, use_cookies=false)
+    def request(method, url, params={}, use_cookies=false, use_ssl=true)
       headers = ( { Authorization: "Bearer #{@access_token}" } ) if !@access_token.nil?
       uri = URI.parse(url)
 
@@ -41,7 +41,7 @@ module TapclicksApi
           request['Cookie'] = get_cookies
         end
         response = Net::HTTP.start(uri.host, uri.port,
-          use_ssl: true) do |http|
+          use_ssl: use_ssl) do |http|
           http.request(request)
         end
       end
