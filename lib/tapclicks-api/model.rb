@@ -25,7 +25,7 @@ module TapclicksApi
       if !model["data"].nil? && model["error"] == false
         return model["data"]["id"]
       else
-        raise model["data"].join("; ")
+        raise model["data"]
       end
 
     end

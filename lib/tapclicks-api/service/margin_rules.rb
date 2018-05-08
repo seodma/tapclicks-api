@@ -1,15 +1,15 @@
 module TapclicksApi
-  class ClientGroups < TapclicksApi::Model
+  class MarginRules < TapclicksApi::Model
     def initialize(options={})
       @app_domain = options[:app_domain]
       super
     end
     def service_url
-      "https://api.tapclicks.com/v2/clientgroups"
+      "https://api.tapclicks.com/v2/m"
     end
-    # client group will be updated if client_group_id passed
+    #  margine_rule will be updated if client_group_id passed
     def create_update(params={})
-      url = "http://#{@custom_domain}/app/dash/clientGroup/update_client_group/key/988f5f9f1dddd0c400c1d238dacf184a"
+      url = "http://#{@custom_domain}/app/dash/margin/update_margin_rule/key/7177ef3b6ebffde2d3d27beebbff5ba8"
       response = request(:post, url, params, true, false)
       model = JSON.parse(response.body)
       if !model["data"]["id"].nil? && model["status"]["success"]
