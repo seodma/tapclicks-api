@@ -16,7 +16,6 @@ module TapclicksApi
     end
 
     def request(method, url, params={}, use_cookies=false, use_ssl=true)
-      headers = ( { Authorization: "Bearer #{@access_token}" } ) if !@access_token.nil?
       uri = URI.parse(url)
 
       case method
